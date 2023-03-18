@@ -1,4 +1,4 @@
-const API_KEY = 'edf3e9fde17c444f747f1fb40c31a83d';
+const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
 
 export async function searchCities(query) {
     const url = `https://api.openweathermap.org/geo/1.0/direct?q=${query}&limit=10&appid=${API_KEY}`;
