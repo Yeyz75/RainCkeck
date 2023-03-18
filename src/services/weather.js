@@ -5,7 +5,7 @@ export async function searchCities(query) {
 
     const response = await fetch(url);
     const data = await response.json();
-    console.log(data)
+    console.log(data);
     if (Array.isArray(data)) {
         return data.map((city) => {
             return {
