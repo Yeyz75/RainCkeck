@@ -5,6 +5,7 @@ import '../styles/LocationSearch.css';
 function LocationSearch() {
     const [searchQuery, setSearchQuery] = useState('');
     const [searchResults, setSearchResults] = useState([]);
+    const [selectedResult, setSelectedResult] = useState(null);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -28,6 +29,17 @@ function LocationSearch() {
         }
     };
 
+    function ResultDetails({ result }) {
+        return (
+            <div>
+                <h2>{result.name}, {result.country}</h2>
+                <p>Latitud: {result.lat}</p>
+                <p>Longitud: {result.lon}</p>
+                <button onClick={() => setSelectedResult(null)}>Cerrar</button>
+            </div>
+        );
+    }
+
     return (
         <div className="LocationSearch">
             <form onSubmit={handleSubmit}>
@@ -41,15 +53,19 @@ function LocationSearch() {
                 />
                 <button type="submit">Buscar</button>
             </form>
-            {searchResults.length > 0 && (
-                <ul>
-                    {searchResults.map((result) => (
-                        <li key={result.id}>
-                            {result.name}, {result.country}
-                        </li>
-                    ))}
-                </ul>
-
+            {selectedResult ? (
+                <ResultDetails result={selectedResult} />
+            ) : (
+                searchResults.length > 0 && (
+                    <ul>
+                        {searchResults.map((result) => (
+                            <li key={result.id}>
+                                {result.name}, {result.country}
+                                <button onClick={() => setSelectedResult(result)}>Ver detalles</button>
+                            </li>
+                        ))}
+                    </ul>
+                )
             )}
         </div>
     );
