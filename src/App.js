@@ -1,10 +1,20 @@
-
+import React from 'react';
 import './App.css';
+import LocationSearch from './components/LocationSearch';
 
 function App() {
   return (
     <div className="App">
-      <h1>Hola RainCkeck</h1>
+      <header className="App-header">
+        <h1>RainCheck</h1>
+        <p>La mejor manera de verificar el clima en tiempo real</p>
+      </header>
+      <main>
+        <LocationSearch />
+      </main>
+      <footer>
+        <p>Hecho con amor por Yeyzon</p>
+      </footer>
     </div>
   );
 }
