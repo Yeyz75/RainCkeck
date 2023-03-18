@@ -8,10 +8,8 @@ function App() {
       <header className="App-header">
         <h1>RainCheck</h1>
         <p>La mejor manera de verificar el clima en tiempo real</p>
-      </header>
-      <main>
         <LocationSearch />
-      </main>
+      </header>
       <footer>
         <p>Hecho con amor por Yeyzon</p>
       </footer>

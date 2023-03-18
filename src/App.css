@@ -5,6 +5,7 @@
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+  transition: transform 0.5s ease;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -24,6 +25,19 @@
   color: white;
 }
 
+.App-header h1 {
+  font-weight: bold;
+  font-size: 4rem;
+  margin-bottom: 0.5rem;
+  color: #0077ff;
+}
+
+.App-header p {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  color: #ffffff;
+}
+
 .App-link {
   color: #61dafb;
 }
@@ -32,6 +46,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
