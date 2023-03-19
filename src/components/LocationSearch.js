@@ -1,45 +1,66 @@
-import "../styles/LocationSearch.css";
-import React, { useState } from "react";
-import { getWeatherByCity } from "../services/weather";
+import React, { useState, useEffect } from 'react';
+import { getWeatherData } from '../services/weather';
 
 function LocationSearch() {
-    const [city, setCity] = useState("");
-    const [temperature, setTemperature] = useState(null);
-    const [humidity, setHumidity] = useState(null);
-    const [isRaining, setIsRaining] = useState(null);
+    const [city, setCity] = useState('');
+    const [country, setCountry] = useState('');
+    const [suggestedCountries, setSuggestedCountries] = useState([]);
 
-    const handleSearch = async () => {
-        const data = await getWeatherByCity(city);
+    useEffect(() => {
+        if (city.length > 0) {
+            fetch(`https://restcountries.com/v2/name/${city}`)
+                .then(response => response.json())
+                .then(data => {
+                    const countries = data.map(country => country.name);
+                    setSuggestedCountries(countries);
+                })
+                .catch(error => console.error(error));
+        } else {
+            setSuggestedCountries([]);
+        }
+    }, [city]);
 
-        // Extraer los valores de temperatura, humedad y lluvia (si está lloviendo)
-        const temperature = data.main.temp;
-        const humidity = data.main.humidity;
-        const isRaining = !!data.rain?.["1h"]; // Verifica si el campo rain.1h existe y es diferente de null
+    function handleCityChange(event) {
+        setCity(event.target.value);
+    }
 
-        // Actualizar el estado de la aplicación
-        setTemperature(temperature);
-        setHumidity(humidity);
-        setIsRaining(isRaining);
-    };
+    function handleCountrySelect(selectedCountry) {
+        setCountry(selectedCountry);
+        setSuggestedCountries([]);
+    }
+
+    async function handleSubmit(event) {
+        event.preventDefault();
+
+        const weatherData = await getWeatherData(city, country);
+
+        console.log(weatherData);
+
+        // Do something with the weather data, like update the UI
+    }
 
     return (
-        <div>
+        <form onSubmit={handleSubmit}>
+            <label htmlFor="city-input">City:</label>
             <input
+                id="city-input"
                 type="text"
-                placeholder="Introduce el nombre de la ciudad"
                 value={city}
-                onChange={(e) => setCity(e.target.value)}
+                onChange={handleCityChange}
             />
-            <button onClick={handleSearch}>Buscar</button>
-
-            {temperature !== null && (
-                <div>
-                    <p>Temperatura: {temperature} K</p>
-                    <p>Humedad: {humidity}%</p>
-                    <p>Está lloviendo: {isRaining ? "Sí" : "No"}</p>
-                </div>
+            {suggestedCountries.length > 0 && (
+                <ul>
+                    {suggestedCountries.map(country => (
+                        <li key={country} onClick={() => handleCountrySelect(country)}>
+                            {country}
+                        </li>
+                    ))}
+                </ul>
             )}
-        </div>
+            <button type="submit" disabled={!country}>
+                Get weather data
+            </button>
+        </form>
     );
 }
 
