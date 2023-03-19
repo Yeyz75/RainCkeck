@@ -11,11 +11,15 @@ export async function getWeatherData(city, country) {
         }
 
         const weatherData = await response.json();
-
+        console.log(weatherData)
         return {
             name: weatherData.name,
             country: weatherData.sys.country,
             temperature: weatherData.main.temp,
+            temp_min: weatherData.main.temp_min,
+            temp_max: weatherData.main.temp_max,
+            pressure: weatherData.main.pressure,
+            sea_level: weatherData.main.sea_level,
             description: weatherData.weather[0].description,
             icon: weatherData.weather[0].icon,
         };
@@ -24,3 +28,4 @@ export async function getWeatherData(city, country) {
         return null;
     }
 }
+
