@@ -11,7 +11,6 @@ export async function getWeatherData(city, country) {
         }
 
         const weatherData = await response.json();
-        console.log(weatherData)
         return {
             name: weatherData.name,
             country: weatherData.sys.country,

@@ -10,7 +10,7 @@ label {
     font-size: 1.5rem;
     font-weight: bold;
     margin-bottom: 0.5rem;
-    color: #333;
+    color: #fcfbfb;
 }
 
 input {
@@ -52,6 +52,10 @@ button {
     border-radius: 0.5rem;
     margin-top: 1rem;
     cursor: pointer;
+}
+
+button:hover {
+    background-color: #267886;
 }
 
 button:disabled {

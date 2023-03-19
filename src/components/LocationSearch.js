@@ -47,7 +47,7 @@ function LocationSearch() {
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="city-input">City:</label>
+                <label htmlFor="city-input">Pais:</label>
                 <input
                     id="city-input"
                     type="text"
@@ -64,18 +64,18 @@ function LocationSearch() {
                     </ul>
                 )}
                 <button type="submit" disabled={!selectedCountry}>
-                    Get weather data
+                    Obtener datos meteorológicos
                 </button>
             </form>
             {error && <div className="error">{error}</div>}
             {weatherData && (
                 <div className="weather-data">
-                    <p>Current temperature: {weatherData.temperature}°C</p>
-                    <p>Minimum temperature: {weatherData.temp_min}°C</p>
-                    <p>Maximum temperature: {weatherData.temp_max}°C</p>
-                    <p>Pressure: {weatherData.pressure} hPa</p>
-                    <p>Sea level: {weatherData.sea_level} m</p>
-                    <p>Description: {weatherData.description}</p>
+                    <p>Temperatura actual: {weatherData.temperature}°C</p>
+                    <p>Temperatura mínima: {weatherData.temp_min}°C</p>
+                    <p>Temperatura máxima: {weatherData.temp_max}°C</p>
+                    <p>Presión: {weatherData.pressure} hPa</p>
+                    <p>Nivel del mar: {weatherData.sea_level} m</p>
+                    <p>Descripción: {weatherData.description}</p>
                     <img src={`http://openweathermap.org/img/w/${weatherData.icon}.png`} alt="Weather icon" />
                 </div>
             )}
