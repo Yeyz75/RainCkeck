@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import '../styles/LocationSearch.css';
 import { getWeatherData } from '../services/weather';
 
 function LocationSearch() {
