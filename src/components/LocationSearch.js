@@ -1,71 +1,43 @@
-import React, { useState } from 'react';
-import { searchCities } from '../services/weather.js';
-import '../styles/LocationSearch.css';
+import "../styles/LocationSearch.css";
+import React, { useState } from "react";
+import { getWeatherByCity } from "../services/weather";
 
 function LocationSearch() {
-    const [searchQuery, setSearchQuery] = useState('');
-    const [searchResults, setSearchResults] = useState([]);
-    const [selectedResult, setSelectedResult] = useState(null);
+    const [city, setCity] = useState("");
+    const [temperature, setTemperature] = useState(null);
+    const [humidity, setHumidity] = useState(null);
+    const [isRaining, setIsRaining] = useState(null);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Aquí podrías llamar a una función que busque la ubicación en la API
-        // y envíe los resultados a otros componentes para su visualización
+    const handleSearch = async () => {
+        const data = await getWeatherByCity(city);
+
+        // Extraer los valores de temperatura, humedad y lluvia (si está lloviendo)
+        const temperature = data.main.temp;
+        const humidity = data.main.humidity;
+        const isRaining = !!data.rain?.["1h"]; // Verifica si el campo rain.1h existe y es diferente de null
+
+        // Actualizar el estado de la aplicación
+        setTemperature(temperature);
+        setHumidity(humidity);
+        setIsRaining(isRaining);
     };
-
-    const handleInputChange = async (e) => {
-        const query = e.target.value;
-        setSearchQuery(query);
-        if (query.length > 2) {
-            try {
-                const results = await searchCities(query);
-                setSearchResults(results);
-            } catch (error) {
-                console.error(error);
-                setSearchResults([]);
-            }
-        } else {
-            setSearchResults([]);
-        }
-    };
-
-    function ResultDetails({ result }) {
-        return (
-            <div>
-                <h2>{result.name}, {result.country}</h2>
-                <p>Latitud: {result.lat}</p>
-                <p>Longitud: {result.lon}</p>
-                <button onClick={() => setSelectedResult(null)}>Cerrar</button>
-            </div>
-        );
-    }
 
     return (
-        <div className="LocationSearch">
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="location-search">Buscar ubicación:</label>
-                <input
-                    id="location-search"
-                    type="text"
-                    placeholder="Escribe el nombre de una ciudad o código postal"
-                    value={searchQuery}
-                    onChange={handleInputChange}
-                />
-                <button type="submit">Buscar</button>
-            </form>
-            {selectedResult ? (
-                <ResultDetails result={selectedResult} />
-            ) : (
-                searchResults.length > 0 && (
-                    <ul>
-                        {searchResults.map((result) => (
-                            <li key={result.id}>
-                                {result.name}, {result.country}
-                                <button onClick={() => setSelectedResult(result)}>Ver detalles</button>
-                            </li>
-                        ))}
-                    </ul>
-                )
+        <div>
+            <input
+                type="text"
+                placeholder="Introduce el nombre de la ciudad"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+            />
+            <button onClick={handleSearch}>Buscar</button>
+
+            {temperature !== null && (
+                <div>
+                    <p>Temperatura: {temperature} K</p>
+                    <p>Humedad: {humidity}%</p>
+                    <p>Está lloviendo: {isRaining ? "Sí" : "No"}</p>
+                </div>
             )}
         </div>
     );
